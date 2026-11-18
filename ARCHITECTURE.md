@@ -31,7 +31,7 @@
 | Layer | Location | Rule |
 |---|---|---|
 | UI | `apps/desktop/src` | Never holds business rules. Talks to the backend **only** through `lib/api.ts`. Shows an explicit notice — never sample data — when the backend is unavailable. |
-| Command layer | `apps/desktop/src-tauri/src/commands.rs` | Typed arguments only; no shell, no string-built SQL. Delegates to the core. Logs raw DB errors locally and returns a generic message. |
+| Command layer | `apps/desktop/src-tauri/src/commands.rs` | Typed arguments only; no shell, no string-built SQL. Delegates to the core. Writes raw DB errors to the local log file (`applog.rs`) and returns a generic message. If the database failed to open at startup, every command returns that reason instead (fail-safe startup). |
 | Core | `recovery-service/src` | All validation, persistence, audit. No Tauri dependency, so it is testable on any OS. |
 | Storage | SQLite via `rusqlite` (bundled) | Parameterised queries only. Forward-only checksummed migrations. |
 

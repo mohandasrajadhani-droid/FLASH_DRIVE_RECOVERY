@@ -1,0 +1,12 @@
+
+ RUN  v5.1.0 /home/claude/audit/FLASHRECOVERY-AI/apps/desktop
+
+
+ Test Files  3 passed (3)
+      Tests  16 passed (16)
+   Start at  15:20:17
+   Duration  4.48s (environment 37%, tests 27%, import 25%, setup 9%, transform 2%)
+
+    Isolate  3 workers spawned · ~621ms startup each (spawn + environment, per file)
+             at least ~1.24s faster with isolate: false — reuses workers across files instead of one per file
+

@@ -25,8 +25,12 @@ pub fn latest_schema_version() -> i64 {
     MIGRATIONS.last().map(|m| m.version).unwrap_or(0)
 }
 
+/// SHA-256 of the migration text with line endings normalised to LF, so a
+/// checkout with CRLF endings (Git for Windows `core.autocrlf=true`) yields
+/// the same checksum as an LF checkout. Without this, a database created by
+/// one build would be rejected as "modified" by a build from another checkout.
 fn checksum(sql: &str) -> String {
-    hex::encode(Sha256::digest(sql.as_bytes()))
+    hex::encode(Sha256::digest(sql.replace("\r\n", "\n").as_bytes()))
 }
 
 /// Open (or create) the application database at `path` and apply pending
@@ -150,6 +154,21 @@ mod tests {
         )
         .unwrap();
         assert!(matches!(migrate(&conn), Err(CoreError::Integrity(_))));
+    }
+
+    #[test]
+    fn checksum_ignores_line_endings() {
+        let lf = "CREATE TABLE a (x INTEGER);\nCREATE TABLE b (y TEXT);\n";
+        let crlf = lf.replace('\n', "\r\n");
+        assert_eq!(checksum(lf), checksum(&crlf));
+        // Every shipped migration hashes the same in either form.
+        for m in MIGRATIONS {
+            assert_eq!(
+                checksum(m.sql),
+                checksum(&m.sql.replace("\r\n", "\n").replace('\n', "\r\n"))
+            );
+        }
+        assert_ne!(checksum(lf), checksum("CREATE TABLE a (x INTEGER);\n"));
     }
 
     #[test]

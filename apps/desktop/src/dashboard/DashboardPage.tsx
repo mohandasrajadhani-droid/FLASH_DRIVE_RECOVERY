@@ -22,9 +22,9 @@ import { BackendErrorNotice, Badge, PageHeader, Panel, Stat, cx } from "../compo
 import { useSettings } from "../components/SettingsContext";
 
 const PRINCIPLES = [
-  { icon: Lock, text: "Source devices are opened read-only by default" },
-  { icon: HardDriveDownload, text: "Recovered files go to a separate destination drive" },
-  { icon: Fingerprint, text: "Disk images are hashed with SHA-256 and verified" },
+  { icon: Lock, text: "Source devices will be opened read-only (from Stage 2)" },
+  { icon: HardDriveDownload, text: "Recovered files will go to a separate destination drive (Stage 4–5)" },
+  { icon: Fingerprint, text: "Disk images will be hashed with SHA-256 and verified (Stage 3)" },
   { icon: ShieldAlert, text: "No automatic CHKDSK, formatting or partition writes" },
 ];
 
@@ -51,7 +51,7 @@ export function DashboardPage() {
         <div className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-accent/10 blur-3xl" />
         <div className="relative grid gap-6 lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <Badge tone="accent">Safety first</Badge>
+            <Badge tone="accent">Safety rules · built in from Stage 2</Badge>
             <h2 className="mt-3 font-display text-xl font-semibold text-text">Protect the original. Recover to a separate drive.</h2>
             <p className="mt-2 max-w-md text-[13px] leading-relaxed text-muted">
               Recovery success depends on overwriting, TRIM, encryption, controller behaviour and physical condition. FLASHRECOVERY AI
