@@ -17,7 +17,8 @@ npm install
 npm run tauri dev
 ```
 
-The database is created at `%APPDATA%\ai.flashrecovery.desktop\flashrecovery.db`. Delete it to start fresh (this also
+The database is created at `%APPDATA%\ai.flashrecovery.desktop\flashrecovery.db`; errors are logged to
+`%LOCALAPPDATA%\ai.flashrecovery.desktop\logs\flashrecovery.log`. Delete it to start fresh (this also
 deletes the audit trail — never do this on a technician machine with real cases).
 
 ## 3. Everyday commands
@@ -37,7 +38,8 @@ deletes the audit trail — never do this on a technician machine with real case
 ```powershell
 cd apps\desktop
 npm run tauri build
-# output: target\release\bundle\msi\*.msi and target\release\bundle\nsis\*-setup.exe
+# output (Cargo workspace target folder at the repository root):
+#   ..\..\target\release\bundle\msi\*.msi and ..\..\target\release\bundle\nsis\*-setup.exe
 ```
 
 Installers are **unsigned** until Stage 9; Windows SmartScreen will warn. Do not distribute unsigned builds to customers.
@@ -48,6 +50,9 @@ Installers are **unsigned** until Stage 9; Windows SmartScreen will warn. Do not
 - [ ] Overview shows *Local backend*, Audit integrity *Verified*, today's `app.started` event.
 - [ ] Switch to Professional → extra modules appear; Settings → Audit log shows `ui.mode easy → professional`.
 - [ ] Create a case with a blank case number → `FR-<year>-0001` assigned; invalid number `!!bad` rejected.
+- [ ] Close and reopen the app → the case, the mode and all audit entries are still there; integrity *Verified*.
+- [ ] Confirm `git config core.autocrlf` does not matter: `.gitattributes` keeps `*.sql` as LF (check with
+      `git ls-files --eol database/migrations`).
 - [ ] Record results and screenshots in `test-results/stage-1-windows/`.
 
 ## 5. Rules (from the project handover)

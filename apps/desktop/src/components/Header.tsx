@@ -9,7 +9,8 @@ import { cx } from "./ui";
 
 export function Header() {
   const { pathname } = useLocation();
-  const { mode, setSetting, operatorName, backend } = useSettings();
+  const { mode, setSetting, operatorName, backend, databaseOk } = useSettings();
+  const healthy = backend && databaseOk;
   const [err, setErr] = useState<string | null>(null);
   const current = MODULES.find((m) => m.path === pathname);
 
@@ -44,12 +45,12 @@ export function Header() {
         <div
           className={cx(
             "flex items-center gap-2 rounded-lg border px-3 py-1.5 text-[12px]",
-            backend ? "border-ok/30 text-ok" : "border-warn/30 text-warn",
+            healthy ? "border-ok/30 text-ok" : "border-warn/30 text-warn",
           )}
-          title={backend ? "Connected to the local backend" : "Running without the desktop backend"}
+          title={!backend ? "Running without the desktop backend" : databaseOk ? "Connected to the local backend" : "The local database could not be opened — see the Overview for details"}
         >
           <ShieldCheck size={14} />
-          {backend ? "Local backend" : "No backend"}
+          {!backend ? "No backend" : databaseOk ? "Local backend" : "Database error"}
         </div>
 
         <div role="radiogroup" aria-label="Interface mode" className="flex rounded-lg border border-line bg-ink-950/60 p-0.5">
@@ -58,7 +59,7 @@ export function Header() {
               key={m}
               role="radio"
               aria-checked={mode === m}
-              disabled={!backend}
+              disabled={!healthy}
               onClick={() => changeMode(m)}
               className={cx(
                 "rounded-md px-3 py-1 text-[12px] font-medium capitalize transition-colors disabled:cursor-not-allowed",

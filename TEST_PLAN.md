@@ -34,7 +34,10 @@
 | T1.18 | E2E | App starts, creates DB, records `app.started` | manual on Linux (RESULTS.md) |
 | T1.19 | E2E | Mode switch persists and is audited | manual on Linux (screenshots 02, 07) |
 | T1.20 | E2E | Create case via UI; invalid case number rejected | manual on Linux (screenshots 05, 06) |
-| T1.21 | E2E | **Windows**: install, launch, repeat T1.18–T1.20 | ⬜ pending Windows machine |
+| T1.21 | E2E | **Windows**: install, launch, repeat T1.18–T1.20 and T1.24 | ⬜ pending Windows machine |
+| T1.22 | DB | Migration checksum identical for LF and CRLF checkouts | `db.rs` |
+| T1.23 | Startup | Database cannot be opened → window opens, reason + log path shown, nothing written, header shows *Database error* | `applog.rs`, `DatabaseError.test.tsx` + manual E2E (audit screenshot d2) |
+| T1.24 | E2E | Data persists across close/reopen and across a forced kill | manual on Linux (audit RESULTS.md) |
 
 ## 3. Plans for later stages (outline)
 

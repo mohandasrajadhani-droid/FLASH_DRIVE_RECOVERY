@@ -8,6 +8,8 @@ interface SettingsValue {
   operatorName: string;
   loaded: boolean;
   backend: boolean;
+  /** False when the backend is running but its database could not be read. */
+  databaseOk: boolean;
   setSetting: (key: string, value: string) => Promise<void>;
 }
 
@@ -16,6 +18,7 @@ const Ctx = createContext<SettingsValue | null>(null);
 export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loaded, setLoaded] = useState(false);
+  const [databaseOk, setDatabaseOk] = useState(true);
   const backend = backendAvailable();
 
   useEffect(() => {
@@ -26,6 +29,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     api
       .settingsGetAll()
       .then((all: Setting[]) => setSettings(Object.fromEntries(all.map((s) => [s.key, s.value]))))
+      // Defaults stay in effect; each page shows the backend error itself.
+      .catch(() => setDatabaseOk(false))
       .finally(() => setLoaded(true));
   }, [backend]);
 
@@ -41,9 +46,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       operatorName: settings["operator.name"] ?? "local-user",
       loaded,
       backend,
+      databaseOk,
       setSetting,
     }),
-    [settings, loaded, backend, setSetting],
+    [settings, loaded, backend, databaseOk, setSetting],
   );
 
   useEffect(() => {

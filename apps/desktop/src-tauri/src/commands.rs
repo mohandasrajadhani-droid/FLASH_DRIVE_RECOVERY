@@ -15,10 +15,21 @@ fn with_conn<T>(state: &State<'_, AppState>, f: impl FnOnce(&mut db::Connection)
         .conn
         .lock()
         .map_err(|_| CoreError::Internal("database lock poisoned; restart the application".into()))?;
-    let res = f(&mut guard);
+    let Some(conn) = guard.as_mut() else {
+        let log = state
+            .log_dir
+            .as_deref()
+            .map(|d| crate::applog::log_path(d).display().to_string())
+            .unwrap_or_else(|| "unavailable".into());
+        return Err(CoreError::Internal(format!(
+            "the database could not be opened at startup ({}). Nothing has been changed. Log file: {log}",
+            state.startup_error.as_deref().unwrap_or("unknown error")
+        )));
+    };
+    let res = f(conn);
     if let Err(CoreError::Database(e)) = &res {
-        // Full detail goes to the local log only; the UI gets a generic message.
-        eprintln!("[flashrecovery] database error: {e}");
+        // Full detail goes to the local log file only; the UI gets a generic message.
+        crate::applog::error(state.log_dir.as_deref(), &format!("database error: {e}"));
     }
     res
 }

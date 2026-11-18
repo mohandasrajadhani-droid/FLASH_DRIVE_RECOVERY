@@ -26,7 +26,12 @@ before its stage is marked complete.
 - **Least-privilege IPC**: capability grants only `core:default`; only 11 explicitly registered commands; none touch
   devices or the filesystem beyond the app's own database.
 - **CSP**: `default-src 'self'; script-src 'self'`; no remote origins, `object-src 'none'`, `frame-ancestors 'none'`.
-- **Error hygiene**: database errors are logged locally and returned to the UI as a generic message.
+- **Error hygiene**: database errors are written to a local log file (`%LOCALAPPDATA%\ai.flashrecovery.desktop\logs\flashrecovery.log`
+  on Windows; release builds have no console) and returned to the UI as a generic message. The log never contains
+  customer data.
+- **Fail-safe startup**: if the database cannot be opened (corruption, modified migration, newer schema), the window
+  still opens, shows the exact reason and the log path, and refuses every data command. Nothing is written to the
+  database in that state.
 - **Audit trail**: append-only (triggers), SHA-256 hash chain, full-chain verifier in the UI and on the dashboard.
   Customer PII values are *not* written into audit details (field names only — tested).
 - **Migration integrity**: applied migrations are checksummed; a modified migration or a newer-than-supported schema
@@ -53,6 +58,12 @@ per item, and cloud calls must be off by default and gated by an explicit, audit
 
 - Rust: run `cargo audit` (install `cargo-audit`) before each release.
 - npm: run `npm audit --omit=dev` before each release.
+- Stage 1 audit (2026-11-18): `cargo audit` found RUSTSEC-2026-0459 (bundled SQLite, medium) → fixed by upgrading
+  `rusqlite` 0.37 → 0.41 (`libsqlite3-sys` 0.39.1, SQLite 3.54.1); now **0 vulnerabilities**. Remaining warnings:
+  `chrono` unmaintained (no known flaw; replace in Stage 8), `glib` and `proc-macro-error` (Linux-only build
+  dependencies, not in the Windows build). `npm audit --omit=dev`: **0**. Dev-only: `picomatch` ≤4.0.7 ReDoS
+  (GHSA-fc5q-39xc-vjpf) via Vite/Vitest — no patched release exists yet; build tooling only, not shipped. Re-check
+  in Stage 8.
 - A dependency inventory with licences is generated into `docs/sbom/` (see `LICENSES.md`).
 
 ## 6. Reporting

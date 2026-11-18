@@ -57,7 +57,7 @@ export function Sidebar() {
       </nav>
 
       <div className="border-t border-line px-5 py-3 text-[11px] leading-relaxed text-faint">
-        Read-only source access by default. Recovered files are never written to the source device.
+        No device access in this build. From Stage 2: read-only source access, and recovered files are never written to the source device.
       </div>
     </aside>
   );
