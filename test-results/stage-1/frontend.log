@@ -1,0 +1,25 @@
+== tsc
+PASS
+== vitest
+ ✓ src/App.test.tsx > application shell (no backend) > renders the sidebar, header and overview 287ms
+ ✓ src/App.test.tsx > application shell (no backend) > shows an explicit backend notice instead of fake numbers 93ms
+ ✓ src/App.test.tsx > application shell (no backend) > planned modules state they are not implemented and offer no controls 44ms
+ ✓ src/App.test.tsx > application shell (no backend) > easy mode (default) redirects professional-only routes to the overview 84ms
+ ✓ src/lib/lib.test.ts > module registry > contains all 14 modules from the specification, with unique ids and paths 2ms
+ ✓ src/lib/lib.test.ts > module registry > only marks Stage-1 deliverables as available 1ms
+ ✓ src/lib/lib.test.ts > module registry > every planned module documents its scope 0ms
+ ✓ src/lib/lib.test.ts > module registry > easy mode hides professional-only modules 1ms
+ ✓ src/lib/lib.test.ts > module registry > roadmap lists nine stages in order 0ms
+ ✓ src/lib/lib.test.ts > client-side validation mirrors backend rules > single line 0ms
+ ✓ src/lib/lib.test.ts > client-side validation mirrors backend rules > multi line allows newlines and tabs only 0ms
+ ✓ src/lib/lib.test.ts > client-side validation mirrors backend rules > case number 0ms
+ ✓ src/lib/lib.test.ts > formatting > relative times 0ms
+ ✓ src/lib/lib.test.ts > formatting > labels and hashes 0ms
+ ✓ src/lib/lib.test.ts > api outside the desktop shell > rejects with 'unavailable' instead of returning sample data 1ms
+ Test Files  2 passed (2)
+      Tests  15 passed (15)
+== vite build
+dist/assets/index-CBK7XZev.css   26.93 kB │ gzip:   5.98 kB
+dist/assets/index-9rU-vYTb.js   724.71 kB │ gzip: 216.39 kB
+
+✓ built in 652ms

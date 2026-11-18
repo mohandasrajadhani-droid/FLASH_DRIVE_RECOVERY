@@ -1,0 +1,20 @@
+[package]
+name = "flashrecovery-desktop"
+description = "FLASHRECOVERY AI — Windows desktop application (Tauri backend)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[lib]
+name = "flashrecovery_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+flashrecovery-core = { path = "../../../recovery-service" }
+tauri = { version = "2", features = [] }
+serde.workspace = true
+serde_json.workspace = true

@@ -1,0 +1,39 @@
+== cargo fmt --check
+PASS
+== cargo clippy -D warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.56s
+== cargo test
+test audit::tests::chain_links_and_verifies ... ok
+test audit::tests::deletion_is_detected ... ok
+test audit::tests::empty_chain_verifies ... ok
+test audit::tests::invalid_actor_rejected_and_nothing_written ... ok
+test audit::tests::tampering_is_detected ... ok
+test audit::tests::list_pages_newest_first ... ok
+test audit::tests::update_and_delete_are_blocked_by_triggers ... ok
+test cases::tests::audit_does_not_store_customer_values ... ok
+test cases::tests::duplicate_number_is_conflict_and_rolls_back ... ok
+test cases::tests::full_crud_cycle_with_audit ... ok
+test cases::tests::noop_update_not_audited ... ok
+test cases::tests::search_treats_wildcards_literally ... ok
+test cases::tests::sequential_case_numbers ... ok
+test cases::tests::validation_failures ... ok
+test db::tests::migrations_apply_and_are_idempotent ... ok
+test db::tests::newer_database_is_rejected ... ok
+test db::tests::tampered_migration_is_rejected ... ok
+test settings::tests::defaults_then_set_and_audit ... ok
+test settings::tests::invalid_values_and_keys_rejected ... ok
+test settings::tests::operator_name_becomes_audit_actor ... ok
+test settings::tests::unchanged_value_is_not_re_audited ... ok
+test summary::tests::empty_database_summary_is_all_zero ... ok
+test summary::tests::summary_reflects_real_rows ... ok
+test validation::tests::case_number_rules ... ok
+test validation::tests::limit_is_clamped ... ok
+test validation::tests::multi_line_rules ... ok
+test validation::tests::single_line_rules ... ok
+test validation::tests::uuid_rules ... ok
+test db::tests::file_database_persists_across_reopen ... ok
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
